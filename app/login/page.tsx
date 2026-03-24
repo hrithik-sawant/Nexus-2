@@ -47,8 +47,9 @@ export default function LoginPage() {
           Where Data Minds Connect
         </p>
 
-        {/* TILES BACK 🔥 */}
+        {/* 🔥 PREMIUM TILES */}
         <div className="mt-10 space-y-4">
+
           {[
             { icon: BookOpen, text: "Access structured courses & PDFs" },
             { icon: BarChart3, text: "Take timed MCQ exams with instant results" },
@@ -57,13 +58,32 @@ export default function LoginPage() {
           ].map((item, i) => (
             <motion.div
               key={i}
-              whileHover={{ y: -5, scale: 1.02 }}
-              className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 backdrop-blur-md hover:bg-white/10"
+              whileHover={{ scale: 1.03 }}
+              transition={{ type: "spring", stiffness: 250 }}
+              className="relative group cursor-pointer rounded-xl p-[1px]"
             >
-              <item.icon className="text-indigo-400" size={20} />
-              <span className="text-gray-300 text-sm">{item.text}</span>
+              {/* Glow border */}
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/0 via-indigo-500/40 to-indigo-500/0 opacity-0 group-hover:opacity-100 blur-md transition duration-300"></div>
+
+              {/* Card */}
+              <div className="relative flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 backdrop-blur-md group-hover:bg-white/10 transition duration-300">
+
+                {/* Icon */}
+                <motion.div
+                  whileHover={{ rotate: 8, scale: 1.1 }}
+                  transition={{ type: "spring", stiffness: 300 }}
+                  className="text-indigo-400"
+                >
+                  <item.icon size={20} />
+                </motion.div>
+
+                <span className="text-gray-300 text-sm">
+                  {item.text}
+                </span>
+              </div>
             </motion.div>
           ))}
+
         </div>
       </div>
 
@@ -82,11 +102,10 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* EMAIL WITH BOUNCE */}
+            {/* EMAIL */}
             <div className="relative">
               <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
 
-              {/* Animated text */}
               <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
                 {email.split("").map((char, i) => (
                   <motion.span
@@ -109,7 +128,7 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* PASSWORD WITH BOUNCE */}
+            {/* PASSWORD */}
             <div className="relative">
               <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
 
