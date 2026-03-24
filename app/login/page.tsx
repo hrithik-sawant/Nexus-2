@@ -2,11 +2,14 @@
 
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { Mail, Lock } from "lucide-react";
+import { Mail, Lock, BookOpen, BarChart3, Flame, LineChart } from "lucide-react";
 
 export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
@@ -15,8 +18,6 @@ export default function LoginPage() {
     window.addEventListener("mousemove", handleMove);
     return () => window.removeEventListener("mousemove", handleMove);
   }, []);
-
-  const text = "NEXUS";
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -27,7 +28,7 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen flex bg-[#0B0F19] text-white relative overflow-hidden">
 
-      {/* 🔥 Cursor Glow */}
+      {/* Cursor Glow */}
       <div
         className="pointer-events-none fixed inset-0 z-0"
         style={{
@@ -38,63 +39,41 @@ export default function LoginPage() {
       {/* LEFT SIDE */}
       <div className="hidden md:flex w-1/2 flex-col justify-center px-16 relative z-10">
 
-        {/* 🔷 Logo Animation */}
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-          className="mb-6 flex items-center gap-3"
-        >
-          <motion.div
-            animate={{ y: [0, -6, 0] }}
-            transition={{ repeat: Infinity, duration: 2 }}
-            className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center font-bold"
-          >
-            N
-          </motion.div>
-
-          <span className="text-lg font-medium text-gray-300">
-            Nexus
-          </span>
-        </motion.div>
-
-        {/* 🔥 Bouncing Text */}
-        <h1 className="text-5xl font-bold leading-tight flex gap-1">
-          {text.split("").map((letter, i) => (
-            <motion.span
-              key={i}
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{
-                delay: i * 0.1,
-                type: "spring",
-                stiffness: 200,
-              }}
-              className="text-white"
-            >
-              {letter}
-            </motion.span>
-          ))}
+        <h1 className="text-5xl font-bold">
+          NEXUS <span className="text-indigo-400">by Hrithik</span>
         </h1>
-
-        <h2 className="text-3xl text-indigo-400 font-semibold mt-2">
-          by Hrithik
-        </h2>
 
         <p className="mt-4 text-gray-400 text-lg">
           Where Data Minds Connect
         </p>
 
+        {/* TILES BACK 🔥 */}
+        <div className="mt-10 space-y-4">
+          {[
+            { icon: BookOpen, text: "Access structured courses & PDFs" },
+            { icon: BarChart3, text: "Take timed MCQ exams with instant results" },
+            { icon: Flame, text: "Build your Potato streak daily" },
+            { icon: LineChart, text: "Track your performance over time" },
+          ].map((item, i) => (
+            <motion.div
+              key={i}
+              whileHover={{ y: -5, scale: 1.02 }}
+              className="flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 backdrop-blur-md hover:bg-white/10"
+            >
+              <item.icon className="text-indigo-400" size={20} />
+              <span className="text-gray-300 text-sm">{item.text}</span>
+            </motion.div>
+          ))}
+        </div>
       </div>
 
       {/* RIGHT SIDE */}
       <div className="flex w-full md:w-1/2 items-center justify-center px-6 relative z-10">
 
         <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8 shadow-2xl"
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="w-full max-w-md bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-8"
         >
           <h3 className="text-lg font-medium mb-1">Sign In</h3>
           <p className="text-gray-400 text-sm mb-6">
@@ -103,23 +82,56 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
+            {/* EMAIL WITH BOUNCE */}
             <div className="relative">
               <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
+
+              {/* Animated text */}
+              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
+                {email.split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </div>
+
               <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 required
-                placeholder="you@example.com"
-                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 text-transparent caret-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
+            {/* PASSWORD WITH BOUNCE */}
             <div className="relative">
               <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+
+              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
+                {password.split("").map((_, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    •
+                  </motion.span>
+                ))}
+              </div>
+
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 required
-                placeholder="••••••••"
-                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition"
+                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 text-transparent caret-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
@@ -128,7 +140,7 @@ export default function LoginPage() {
               whileTap={{ scale: 0.95 }}
               type="submit"
               disabled={loading}
-              className="w-full bg-indigo-600 hover:bg-indigo-500 py-3 rounded-lg font-medium transition flex items-center justify-center"
+              className="w-full bg-indigo-600 py-3 rounded-lg font-medium"
             >
               {loading ? "Signing in..." : "Sign In →"}
             </motion.button>
