@@ -101,15 +101,15 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* EMAIL (ANIMATED) */}
+            {/* EMAIL FIXED */}
             <div className="relative">
-              <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
 
-              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
+              <div className="absolute left-10 top-1/2 -translate-y-1/2 flex pointer-events-none text-white text-sm tracking-wide">
                 {email.split("").map((char, i) => (
                   <motion.span
                     key={i}
-                    initial={{ y: 10, opacity: 0 }}
+                    initial={{ y: 6, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
@@ -127,15 +127,15 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* PASSWORD (ANIMATED) */}
+            {/* PASSWORD FIXED */}
             <div className="relative">
-              <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
 
-              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
+              <div className="absolute left-10 top-1/2 -translate-y-1/2 flex pointer-events-none text-white text-sm tracking-wide">
                 {password.split("").map((_, i) => (
                   <motion.span
                     key={i}
-                    initial={{ y: 10, opacity: 0 }}
+                    initial={{ y: 6, opacity: 0 }}
                     animate={{ y: 0, opacity: 1 }}
                     transition={{ type: "spring", stiffness: 300 }}
                   >
