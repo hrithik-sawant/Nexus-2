@@ -101,27 +101,55 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
+            {/* EMAIL (ANIMATED) */}
             <div className="relative">
               <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
+
+              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
+                {email.split("").map((char, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    {char}
+                  </motion.span>
+                ))}
+              </div>
+
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 required
-                placeholder="Email"
-                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 text-transparent caret-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
+            {/* PASSWORD (ANIMATED) */}
             <div className="relative">
               <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
+
+              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
+                {password.split("").map((_, i) => (
+                  <motion.span
+                    key={i}
+                    initial={{ y: 10, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ type: "spring", stiffness: 300 }}
+                  >
+                    •
+                  </motion.span>
+                ))}
+              </div>
+
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 required
-                placeholder="Password"
-                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 text-transparent caret-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
