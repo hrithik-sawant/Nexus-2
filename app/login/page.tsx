@@ -3,8 +3,12 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { Mail, Lock, BookOpen, BarChart3, Flame, LineChart } from "lucide-react";
+import { supabase } from "@/lib/supabase";
+import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [loading, setLoading] = useState(false);
   const [mouse, setMouse] = useState({ x: 0, y: 0 });
 
@@ -19,10 +23,22 @@ export default function LoginPage() {
     return () => window.removeEventListener("mousemove", handleMove);
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(() => setLoading(false), 1500);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    setLoading(false);
+
+    if (error) {
+      alert(error.message);
+    } else {
+      router.push("/dashboard");
+    }
   };
 
   return (
@@ -47,9 +63,7 @@ export default function LoginPage() {
           Where Data Minds Connect
         </p>
 
-        {/* 🔥 PREMIUM TILES */}
         <div className="mt-10 space-y-4">
-
           {[
             { icon: BookOpen, text: "Access structured courses & PDFs" },
             { icon: BarChart3, text: "Take timed MCQ exams with instant results" },
@@ -59,31 +73,16 @@ export default function LoginPage() {
             <motion.div
               key={i}
               whileHover={{ scale: 1.03 }}
-              transition={{ type: "spring", stiffness: 250 }}
-              className="relative group cursor-pointer rounded-xl p-[1px]"
+              className="relative group rounded-xl p-[1px]"
             >
-              {/* Glow border */}
-              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/0 via-indigo-500/40 to-indigo-500/0 opacity-0 group-hover:opacity-100 blur-md transition duration-300"></div>
+              <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-indigo-500/0 via-indigo-500/40 to-indigo-500/0 opacity-0 group-hover:opacity-100 blur-md transition"></div>
 
-              {/* Card */}
-              <div className="relative flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 backdrop-blur-md group-hover:bg-white/10 transition duration-300">
-
-                {/* Icon */}
-                <motion.div
-                  whileHover={{ rotate: 8, scale: 1.1 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  className="text-indigo-400"
-                >
-                  <item.icon size={20} />
-                </motion.div>
-
-                <span className="text-gray-300 text-sm">
-                  {item.text}
-                </span>
+              <div className="relative flex items-center gap-3 bg-white/5 border border-white/10 rounded-xl px-4 py-3 backdrop-blur-md group-hover:bg-white/10">
+                <item.icon className="text-indigo-400" size={20} />
+                <span className="text-gray-300 text-sm">{item.text}</span>
               </div>
             </motion.div>
           ))}
-
         </div>
       </div>
 
@@ -102,55 +101,27 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* EMAIL */}
             <div className="relative">
               <Mail className="absolute left-3 top-3 text-gray-400" size={18} />
-
-              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
-                {email.split("").map((char, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    {char}
-                  </motion.span>
-                ))}
-              </div>
-
               <input
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 text-transparent caret-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Email"
+                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
-            {/* PASSWORD */}
             <div className="relative">
               <Lock className="absolute left-3 top-3 text-gray-400" size={18} />
-
-              <div className="absolute left-10 top-3 flex gap-[1px] pointer-events-none">
-                {password.split("").map((_, i) => (
-                  <motion.span
-                    key={i}
-                    initial={{ y: 10, opacity: 0 }}
-                    animate={{ y: 0, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 300 }}
-                  >
-                    •
-                  </motion.span>
-                ))}
-              </div>
-
               <input
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 required
-                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 text-transparent caret-white focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                placeholder="Password"
+                className="w-full bg-white/5 border border-white/10 rounded-lg py-3 pl-10 pr-3 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
