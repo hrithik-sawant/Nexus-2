@@ -15,6 +15,15 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  // ✅ session redirect (safe)
+  useEffect(() => {
+    const check = async () => {
+      const { data } = await supabase.auth.getSession();
+      if (data.session) router.push("/dashboard");
+    };
+    check();
+  }, [router]);
+
   useEffect(() => {
     const handleMove = (e: MouseEvent) => {
       setMouse({ x: e.clientX, y: e.clientY });
@@ -34,11 +43,8 @@ export default function LoginPage() {
 
     setLoading(false);
 
-    if (error) {
-      alert(error.message);
-    } else {
-      router.push("/dashboard");
-    }
+    if (error) alert(error.message);
+    else router.push("/dashboard");
   };
 
   return (
@@ -101,11 +107,11 @@ export default function LoginPage() {
 
           <form onSubmit={handleSubmit} className="space-y-5">
 
-            {/* EMAIL FIXED */}
+            {/* EMAIL (ANIMATED) */}
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
 
-              <div className="absolute left-10 top-1/2 -translate-y-1/2 flex pointer-events-none text-white text-sm tracking-wide">
+              <div className="absolute left-10 top-1/2 -translate-y-1/2 flex pointer-events-none text-sm tracking-wide">
                 {email.split("").map((char, i) => (
                   <motion.span
                     key={i}
@@ -127,11 +133,11 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* PASSWORD FIXED */}
+            {/* PASSWORD (ANIMATED) */}
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
 
-              <div className="absolute left-10 top-1/2 -translate-y-1/2 flex pointer-events-none text-white text-sm tracking-wide">
+              <div className="absolute left-10 top-1/2 -translate-y-1/2 flex pointer-events-none text-sm tracking-wide">
                 {password.split("").map((_, i) => (
                   <motion.span
                     key={i}
@@ -164,6 +170,17 @@ export default function LoginPage() {
             </motion.button>
 
           </form>
+
+          <p className="text-gray-400 text-sm mt-6 text-center">
+            New here?{" "}
+            <span
+              onClick={() => router.push("/signup")}
+              className="text-indigo-400 cursor-pointer"
+            >
+              Create account
+            </span>
+          </p>
+
         </motion.div>
       </div>
     </div>
